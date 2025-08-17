@@ -1,0 +1,203 @@
+import styles from './InputForm.module.css';
+
+export interface InvestmentInputs {
+  // General parameters
+  initialNetWorth: number;
+  yearlyInvestment: number;
+  
+  // Stock investment path (renting)
+  weeklyRent: number;
+  stockAnnualReturn: number;
+  
+  // Property purchase path (residence)
+  houseCost: number;
+  mortgageRate: number;
+  houseGrowthRate: number;
+  ownersCorp: number; // Annual costs including repairs, strata, etc.
+}
+
+interface Props {
+  inputs: InvestmentInputs;
+  onInputChange: (inputs: InvestmentInputs) => void;
+}
+
+export default function InputForm({ inputs, onInputChange }: Props) {
+  const handleInputChange = (field: keyof InvestmentInputs, value: number) => {
+    onInputChange({
+      ...inputs,
+      [field]: value
+    });
+  };
+
+  // Calculate derived values for display
+  const deposit = inputs.initialNetWorth;
+  const loanAmount = inputs.houseCost - deposit;
+  const monthlyMortgage = loanAmount > 0 ? calculateMortgagePayment(loanAmount, inputs.mortgageRate, 30) : 0;
+  const totalMortgagePayments = monthlyMortgage * 12 + inputs.ownersCorp;
+  const additionalPayment = Math.max(0, inputs.yearlyInvestment - totalMortgagePayments);
+  const payoffTime = loanAmount > 0 ? calculatePayoffTime(loanAmount, inputs.mortgageRate, monthlyMortgage, additionalPayment) : 0;
+
+  return (
+    <div className={styles.container}>
+      <h2>Rent + Stocks vs Buy House Comparison</h2>
+      <p className={styles.description}>
+        Compare renting and investing in stocks vs purchasing a house as your primary residence.
+      </p>
+      
+      <div className={styles.section}>
+        <h3>General Parameters</h3>
+        <div className={styles.inputGroup}>
+          <label>Initial Net Worth / Deposit ($)</label>
+          <input
+            type="number"
+            value={inputs.initialNetWorth}
+            onChange={(e) => handleInputChange('initialNetWorth', Number(e.target.value))}
+            step="10000"
+          />
+          <small>Your current savings available for investment or house deposit</small>
+        </div>
+        <div className={styles.inputGroup}>
+          <label>Yearly Investment / Extra Payments ($)</label>
+          <input
+            type="number"
+            value={inputs.yearlyInvestment}
+            onChange={(e) => handleInputChange('yearlyInvestment', Number(e.target.value))}
+            step="1000"
+          />
+          <small>Amount you can invest annually (after living expenses)</small>
+        </div>
+      </div>
+
+      <div className={styles.section}>
+        <h3>Stock Investment Path (While Renting)</h3>
+        <div className={styles.inputGroup}>
+          <label>Weekly Rent ($)</label>
+          <input
+            type="number"
+            value={inputs.weeklyRent}
+            onChange={(e) => handleInputChange('weeklyRent', Number(e.target.value))}
+            step="25"
+          />
+          <small>Your rental cost per week</small>
+        </div>
+        <div className={styles.inputGroup}>
+          <label>Stock Annual Return (%)</label>
+          <input
+            type="number"
+            value={inputs.stockAnnualReturn}
+            onChange={(e) => handleInputChange('stockAnnualReturn', Number(e.target.value))}
+            step="0.5"
+          />
+          <small>Expected total return including dividends and capital growth</small>
+        </div>
+      </div>
+
+      <div className={styles.section}>
+        <h3>House Purchase Path</h3>
+        <div className={styles.inputGroup}>
+          <label>House Cost ($)</label>
+          <input
+            type="number"
+            value={inputs.houseCost}
+            onChange={(e) => handleInputChange('houseCost', Number(e.target.value))}
+            step="25000"
+          />
+          <small>Total purchase price of the house</small>
+        </div>
+        <div className={styles.inputGroup}>
+          <label>Mortgage Interest Rate (%)</label>
+          <input
+            type="number"
+            value={inputs.mortgageRate}
+            onChange={(e) => handleInputChange('mortgageRate', Number(e.target.value))}
+            step="0.1"
+          />
+          <small>Annual interest rate on the mortgage</small>
+        </div>
+        <div className={styles.inputGroup}>
+          <label>House Growth Rate (% p.a.)</label>
+          <input
+            type="number"
+            value={inputs.houseGrowthRate}
+            onChange={(e) => handleInputChange('houseGrowthRate', Number(e.target.value))}
+            step="0.1"
+          />
+          <small>Expected annual property value growth rate</small>
+        </div>
+        <div className={styles.inputGroup}>
+          <label>Owners Corp, Repairs, etc. ($/year)</label>
+          <input
+            type="number"
+            value={inputs.ownersCorp}
+            onChange={(e) => handleInputChange('ownersCorp', Number(e.target.value))}
+            step="500"
+          />
+          <small>Annual costs for maintenance, strata fees, council rates, insurance</small>
+        </div>
+      </div>
+
+      <div className={styles.calculations}>
+        <h3>Quick Calculations</h3>
+        <p className={styles.calcDescription}>
+          These calculations show what happens with your inputs. 
+          <strong> Check the table below</strong> for detailed year-by-year breakdowns.
+        </p>
+        <div className={styles.calcGrid}>
+          <div className={styles.calcItem}>
+            <span>Loan Amount:</span>
+            <span>{formatCurrency(loanAmount)}</span>
+          </div>
+          <div className={styles.calcItem}>
+            <span>Monthly Mortgage:</span>
+            <span>{formatCurrency(monthlyMortgage)}</span>
+          </div>
+          <div className={styles.calcItem}>
+            <span>Total Annual Housing Costs:</span>
+            <span>{formatCurrency(totalMortgagePayments)}</span>
+          </div>
+          <div className={styles.calcItem}>
+            <span>Extra Payment Capacity:</span>
+            <span>{formatCurrency(additionalPayment)}</span>
+          </div>
+          <div className={styles.calcItem}>
+            <span>Estimated Payoff Time:</span>
+            <span>{payoffTime.toFixed(1)} years</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Helper functions for calculations
+function calculateMortgagePayment(principal: number, annualRate: number, termYears: number): number {
+  const monthlyRate = annualRate / 100 / 12;
+  const numPayments = termYears * 12;
+  
+  if (monthlyRate === 0) return principal / numPayments;
+  
+  return principal * (monthlyRate * Math.pow(1 + monthlyRate, numPayments)) /
+         (Math.pow(1 + monthlyRate, numPayments) - 1);
+}
+
+function calculatePayoffTime(principal: number, annualRate: number, monthlyPayment: number, extraAnnualPayment: number): number {
+  if (extraAnnualPayment <= 0) return 30; // Standard 30 year term
+  
+  const monthlyRate = annualRate / 100 / 12;
+  const totalMonthlyPayment = monthlyPayment + (extraAnnualPayment / 12);
+  
+  if (monthlyRate === 0) return principal / (totalMonthlyPayment * 12);
+  
+  // Use formula for amortization with extra payments
+  const months = -Math.log(1 - (principal * monthlyRate) / totalMonthlyPayment) / Math.log(1 + monthlyRate);
+  return Math.max(0.1, months / 12);
+}
+
+function formatCurrency(amount: number): string {
+  return new Intl.NumberFormat('en-AU', {
+    style: 'currency',
+    currency: 'AUD',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(amount);
+}

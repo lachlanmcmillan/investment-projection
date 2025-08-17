@@ -1,0 +1,147 @@
+.container {
+  background: white;
+  border-radius: 8px;
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.container h2 {
+  margin-top: 0;
+  margin-bottom: 12px;
+  color: #2c3e50;
+  border-bottom: 2px solid #3498db;
+  padding-bottom: 8px;
+}
+
+.hoverHint {
+  text-align: center;
+  color: #5a6c7d;
+  font-size: 0.95em;
+  margin-bottom: 20px;
+  padding: 12px 20px;
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  border-radius: 6px;
+  border: 1px solid #dee2e6;
+  font-style: italic;
+}
+
+.hoverHint strong {
+  color: #3498db;
+  font-weight: 600;
+}
+
+.noData {
+  text-align: center;
+  color: #7f8c8d;
+  font-style: italic;
+  padding: 80px 0;
+  background: #f8f9fa;
+  border-radius: 6px;
+  border: 2px dashed #dee2e6;
+}
+
+.chartContainer {
+  height: 500px;
+  margin-bottom: 32px;
+  background: #fafbfc;
+  border-radius: 6px;
+  padding: 20px;
+  border: 1px solid #e1e5e9;
+}
+
+.summary {
+  margin-bottom: 24px;
+}
+
+.summaryCard {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 24px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.summaryCard h3 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 1.2em;
+  text-align: center;
+}
+
+.insights {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.insight {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  backdrop-filter: blur(10px);
+}
+
+.icon {
+  font-size: 1.5em;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.insight div {
+  flex: 1;
+}
+
+.insight strong {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 0.95em;
+}
+
+.amount {
+  font-size: 1.1em;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.disclaimer {
+  background: #fff9e6;
+  border: 1px solid #ffd93d;
+  border-radius: 6px;
+  padding: 16px;
+  margin-top: 24px;
+}
+
+.disclaimer p {
+  margin: 0;
+  color: #8b6914;
+  font-size: 0.9em;
+  line-height: 1.5;
+}
+
+.disclaimer strong {
+  color: #6b5610;
+}
+
+@media (max-width: 768px) {
+  .chartContainer {
+    height: 400px;
+    padding: 12px;
+  }
+  
+  .insights {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  .insight {
+    padding: 12px;
+  }
+  
+  .icon {
+    font-size: 1.3em;
+  }
+}
