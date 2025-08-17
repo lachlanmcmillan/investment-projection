@@ -98,10 +98,12 @@ export default function ComparisonTable({ projections, inputs }: Props) {
                           <th>Rent Paid</th>
                           <th>Net Stocks</th>
                           <th>House Value</th>
+                          <th>Growth</th>
                           <th>Mortgage</th>
-                          <th>Payments</th>
-                          <th>Owners Corp</th>
+                          <th>Investment</th>
+                          <th>Fees</th>
                           <th>Interest</th>
+                          <th>Net Interest</th>
                           <th>Net Property</th>
                           <th>Winner</th>
                         </tr>
@@ -127,10 +129,16 @@ export default function ComparisonTable({ projections, inputs }: Props) {
                 inputs.houseCost * Math.pow(1 + inputs.houseGrowthRate / 100, projection.year - 1) : 
                 inputs.houseCost;
               
+              // Calculate house growth for this year
+              const houseGrowth = beginningHouseValue * (inputs.houseGrowthRate / 100);
+              
               // Calculate beginning of year mortgage balance
               const beginningMortgageBalance = yearIndex > 0 ? 
                 calculateMortgageBalance(loanAmount, inputs.mortgageRate, monthlyMortgage, extraPayment, projection.year - 1) : 
                 loanAmount;
+              
+              // Calculate annual interest payment for this year
+              const annualInterestPayment = beginningMortgageBalance * (inputs.mortgageRate / 100);
               
               const difference = projection.stockNetWorth - projection.propertyNetWorth;
               const leader = difference >= 0 ? 'S' : 'P';
@@ -148,9 +156,11 @@ export default function ComparisonTable({ projections, inputs }: Props) {
                   
                   {/* Property columns */}
                   <td>{formatCurrency(beginningHouseValue)}</td>
+                  <td className={styles.positive}>+{formatCurrency(houseGrowth)}</td>
                   <td className={styles.negative}>-{formatCurrency(beginningMortgageBalance)}</td>
                   <td className={styles.positive}>+{formatCurrency(inputs.yearlyInvestment)}</td>
                   <td className={styles.negative}>-{formatCurrency(inputs.ownersCorp)}</td>
+                  <td className={styles.negative}>-{formatCurrency(annualInterestPayment)}</td>
                   <td className={styles.negative}>-{formatCurrency(projection.totalInterestPaid)}</td>
                   <td className={styles.totalProperty}>{formatCurrency(projection.propertyNetWorth)}</td>
                   
