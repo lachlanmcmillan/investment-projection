@@ -90,20 +90,21 @@ export default function ComparisonTable({ projections, inputs }: Props) {
       <div className={styles.tableContainer}>
         <table className={styles.table}>
           <thead>
-            <tr>
-              <th>Year</th>
-              <th>Portfolio</th>
-              <th>Growth</th>
-              <th>Investment</th>
-              <th>Rent Paid</th>
-              <th>Net Stocks</th>
-              <th>House Value</th>
-              <th>Mortgage</th>
-              <th>Interest</th>
-              <th>Payments</th>
-              <th>Net Property</th>
-              <th>Winner</th>
-            </tr>
+                                    <tr>
+                          <th>Year</th>
+                          <th>Portfolio</th>
+                          <th>Growth</th>
+                          <th>Investment</th>
+                          <th>Rent Paid</th>
+                          <th>Net Stocks</th>
+                          <th>House Value</th>
+                          <th>Mortgage</th>
+                          <th>Payments</th>
+                          <th>Owners Corp</th>
+                          <th>Interest</th>
+                          <th>Net Property</th>
+                          <th>Winner</th>
+                        </tr>
           </thead>
           <tbody>
             {displayYears.map((projection) => {
@@ -119,6 +120,7 @@ export default function ComparisonTable({ projections, inputs }: Props) {
               const monthlyMortgage = loanAmount > 0 ? calculateMortgagePayment(loanAmount, inputs.mortgageRate, 30) : 0;
               const annualMortgage = monthlyMortgage * 12;
               const extraPayment = Math.max(0, inputs.yearlyInvestment - annualMortgage - inputs.ownersCorp);
+              const totalMortgagePayments = annualMortgage + extraPayment;
               
               // Calculate beginning of year house value
               const beginningHouseValue = yearIndex > 0 ? 
@@ -146,9 +148,10 @@ export default function ComparisonTable({ projections, inputs }: Props) {
                   
                   {/* Property columns */}
                   <td>{formatCurrency(beginningHouseValue)}</td>
-                  <td className={styles.negative}>{formatCurrency(beginningMortgageBalance)}</td>
+                  <td className={styles.negative}>-{formatCurrency(beginningMortgageBalance)}</td>
+                  <td className={styles.positive}>+{formatCurrency(inputs.yearlyInvestment)}</td>
+                  <td className={styles.negative}>-{formatCurrency(inputs.ownersCorp)}</td>
                   <td className={styles.negative}>-{formatCurrency(projection.totalInterestPaid)}</td>
-                  <td className={styles.negative}>-{formatCurrency(annualMortgage + inputs.ownersCorp)}</td>
                   <td className={styles.totalProperty}>{formatCurrency(projection.propertyNetWorth)}</td>
                   
                   {/* Winner */}

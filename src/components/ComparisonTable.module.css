@@ -68,14 +68,6 @@
   font-size: 1.1em;
 }
 
-.positive {
-  color: #2ecc71;
-}
-
-.negative {
-  color: #e74c3c;
-}
-
 .stock {
   color: #3498db;
 }
@@ -95,7 +87,7 @@
 .table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.75em;
+  font-size: 1rem;
   background: white;
   font-family: 'SF Mono', Monaco, 'Cascadia Code', Consolas, monospace;
 }
@@ -130,19 +122,6 @@
 
 .tableRow:nth-child(even):hover {
   background: #f0f2f5;
-}
-
-.difference {
-  text-align: center !important;
-  font-weight: 600;
-  position: relative;
-}
-
-.leader {
-  font-size: 0.7em;
-  font-weight: 400;
-  color: #7f8c8d;
-  margin-top: 2px;
 }
 
 
