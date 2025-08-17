@@ -65,6 +65,33 @@
   box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
 }
 
+.errorInput {
+  border-color: #e74c3c !important;
+  background-color: rgba(231, 76, 60, 0.05) !important;
+}
+
+.errorInput:focus {
+  border-color: #e74c3c !important;
+  box-shadow: 0 0 0 2px rgba(231, 76, 60, 0.2) !important;
+}
+
+.errorMessage {
+  margin-top: 6px;
+  padding: 8px 12px;
+  background: rgba(231, 76, 60, 0.1);
+  border: 1px solid rgba(231, 76, 60, 0.3);
+  border-radius: 4px;
+  color: #c0392b;
+  font-size: 0.8em;
+  line-height: 1.4;
+  font-weight: 500;
+}
+
+.errorMessage strong {
+  color: #a93226;
+  font-weight: 600;
+}
+
 .inputGroup small {
   color: #7f8c8d;
   font-size: 0.75em;
@@ -115,6 +142,16 @@
 .calcDescription strong {
   color: #ffffff;
   font-weight: 600;
+}
+
+.calculationsDisabled {
+  background: linear-gradient(135deg, #95a5a6, #7f8c8d) !important;
+  opacity: 0.8;
+}
+
+.calculationsDisabled .calcDescription {
+  color: rgba(255, 255, 255, 1);
+  font-weight: 500;
 }
 
 .calcGrid {

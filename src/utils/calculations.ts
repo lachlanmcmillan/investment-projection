@@ -93,6 +93,11 @@ export function calculateProjections(inputs: InvestmentInputs): YearlyProjection
   const annualMortgageCosts = monthlyMortgage * 12 + inputs.ownersCorp;
   const extraAnnualPayment = Math.max(0, inputs.yearlyInvestment - annualMortgageCosts);
   
+  // Check if house is unaffordable
+  if (inputs.yearlyInvestment < annualMortgageCosts) {
+    return []; // Return empty projections if unaffordable
+  }
+  
   // Calculate when mortgage will be paid off
   const payoffTime = loanAmount > 0 ? calculatePayoffTime(loanAmount, inputs.mortgageRate, monthlyMortgage, extraAnnualPayment) : 0;
   const maxYears = Math.max(5, Math.ceil(payoffTime) + 2); // Show a bit beyond payoff

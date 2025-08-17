@@ -36,6 +36,10 @@ export default function InputForm({ inputs, onInputChange }: Props) {
   const totalMortgagePayments = monthlyMortgage * 12 + inputs.ownersCorp;
   const additionalPayment = Math.max(0, inputs.yearlyInvestment - totalMortgagePayments);
   const payoffTime = loanAmount > 0 ? calculatePayoffTime(loanAmount, inputs.mortgageRate, monthlyMortgage, additionalPayment) : 0;
+  
+  // Calculate affordability
+  const isUnaffordable = inputs.yearlyInvestment < totalMortgagePayments;
+  const minimumYearlyRequired = totalMortgagePayments;
 
   return (
     <div className={styles.container}>
@@ -101,8 +105,15 @@ export default function InputForm({ inputs, onInputChange }: Props) {
             value={inputs.houseCost}
             onChange={(e) => handleInputChange('houseCost', Number(e.target.value))}
             step="25000"
+            className={isUnaffordable ? styles.errorInput : ''}
           />
           <small>Total purchase price of the house</small>
+          {isUnaffordable && (
+            <div className={styles.errorMessage}>
+              ⚠️ This house price requires a minimum of <strong>{formatCurrency(minimumYearlyRequired)}/year</strong> in repayments. 
+              Increase your yearly investment or choose a cheaper house.
+            </div>
+          )}
         </div>
         <div className={styles.inputGroup}>
           <label>Mortgage Interest Rate (%)</label>
@@ -136,34 +147,38 @@ export default function InputForm({ inputs, onInputChange }: Props) {
         </div>
       </div>
 
-      <div className={styles.calculations}>
+      <div className={`${styles.calculations} ${isUnaffordable ? styles.calculationsDisabled : ''}`}>
         <h3>Quick Calculations</h3>
         <p className={styles.calcDescription}>
-          These calculations show what happens with your inputs. 
-          <strong> Check the table below</strong> for detailed year-by-year breakdowns.
+          {isUnaffordable ? 
+            "⚠️ Fix the affordability issue above to see calculations" :
+            "These calculations show what happens with your inputs. Check the table below for detailed year-by-year breakdowns."
+          }
         </p>
-        <div className={styles.calcGrid}>
-          <div className={styles.calcItem}>
-            <span>Loan Amount:</span>
-            <span>{formatCurrency(loanAmount)}</span>
+        {!isUnaffordable && (
+          <div className={styles.calcGrid}>
+            <div className={styles.calcItem}>
+              <span>Loan Amount:</span>
+              <span>{formatCurrency(loanAmount)}</span>
+            </div>
+            <div className={styles.calcItem}>
+              <span>Monthly Mortgage:</span>
+              <span>{formatCurrency(monthlyMortgage)}</span>
+            </div>
+            <div className={styles.calcItem}>
+              <span>Total Annual Housing Costs:</span>
+              <span>{formatCurrency(totalMortgagePayments)}</span>
+            </div>
+            <div className={styles.calcItem}>
+              <span>Extra Payment Capacity:</span>
+              <span>{formatCurrency(additionalPayment)}</span>
+            </div>
+            <div className={styles.calcItem}>
+              <span>Estimated Payoff Time:</span>
+              <span>{payoffTime.toFixed(1)} years</span>
+            </div>
           </div>
-          <div className={styles.calcItem}>
-            <span>Monthly Mortgage:</span>
-            <span>{formatCurrency(monthlyMortgage)}</span>
-          </div>
-          <div className={styles.calcItem}>
-            <span>Total Annual Housing Costs:</span>
-            <span>{formatCurrency(totalMortgagePayments)}</span>
-          </div>
-          <div className={styles.calcItem}>
-            <span>Extra Payment Capacity:</span>
-            <span>{formatCurrency(additionalPayment)}</span>
-          </div>
-          <div className={styles.calcItem}>
-            <span>Estimated Payoff Time:</span>
-            <span>{payoffTime.toFixed(1)} years</span>
-          </div>
-        </div>
+        )}
       </div>
     </div>
   );
