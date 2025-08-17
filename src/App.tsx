@@ -9,14 +9,14 @@ import './App.css';
 const defaultInputs: InvestmentInputs = {
   // General parameters
   initialNetWorth: 100000, // Available savings for deposit or investment
-  yearlyInvestment: 25000, // Annual amount available for investment/extra payments
+  yearlyInvestment: 35000, // Annual amount available for investment/extra payments
   
   // Stock investment path (renting)
   weeklyRent: 500, // Weekly rental cost
   stockAnnualReturn: 9.8, // Expected stock market return including dividends
   
   // Property purchase path (residence)
-  houseCost: 1000000, // Purchase price
+  houseCost: 500000, // Purchase price
   mortgageRate: 5.5, // Mortgage interest rate
   houseGrowthRate: 3.5, // Conservative property growth rate
   ownersCorp: 5000, // Annual costs (strata, repairs, rates, insurance)

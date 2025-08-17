@@ -1,17 +1,18 @@
 .container {
   background: white;
   border-radius: 8px;
-  padding: 16px;
-  margin-bottom: 16px;
+  padding: 12px;
+  margin-bottom: 12px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .container h2 {
   margin-top: 0;
-  margin-bottom: 24px;
+  margin-bottom: 16px;
   color: #2c3e50;
   border-bottom: 2px solid #3498db;
-  padding-bottom: 8px;
+  padding-bottom: 6px;
+  font-size: 1.2em;
 }
 
 .noData {
@@ -84,225 +85,113 @@
 }
 
 .tableContainer {
-  margin-bottom: 24px;
-}
-
-.tableWrapper {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.yearSection {
+  margin-bottom: 16px;
+  overflow-x: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
   background: white;
-  border-radius: 8px;
-  border: 1px solid #e1e5e9;
-  overflow: hidden;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-}
-
-.yearHeader {
-  background: linear-gradient(135deg, #3498db, #2980b9);
-  color: white;
-  padding: 12px 16px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 12px;
-}
-
-.yearHeader h3 {
-  margin: 0;
-  font-size: 1.1em;
-  font-weight: 600;
-}
-
-.finalValues {
-  display: flex;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-
-.stockFinal, .propertyFinal {
-  background: rgba(255, 255, 255, 0.2);
-  padding: 6px 12px;
-  border-radius: 4px;
-  font-weight: 600;
-  font-size: 0.9em;
-  backdrop-filter: blur(10px);
-}
-
-.calculationGrid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0;
-}
-
-.stockCalculation {
-  padding: 16px;
-  background: rgba(52, 152, 219, 0.02);
-  border-right: 1px solid #e1e5e9;
-}
-
-.propertyCalculation {
-  padding: 16px;
-  background: rgba(230, 126, 34, 0.02);
-}
-
-.stockCalculation h4, .propertyCalculation h4 {
-  margin-top: 0;
-  margin-bottom: 12px;
-  font-size: 1em;
-  color: #2c3e50;
-}
-
-.calcSteps {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.calcStep {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 8px;
-  align-items: center;
-  padding: 8px 12px;
-  background: rgba(255, 255, 255, 0.7);
-  border-radius: 4px;
-  border: 1px solid rgba(0, 0, 0, 0.05);
-}
-
-.calcStep.total {
-  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-  border: 2px solid #3498db;
-  font-weight: 600;
-  margin-top: 8px;
-}
-
-.calcStep .label {
-  font-weight: 500;
-  color: #2c3e50;
-}
-
-.calcStep .value {
-  font-weight: 600;
-  color: #27ae60;
-  text-align: right;
-  font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
-}
-
-.calcStep.total .value {
-  color: #2980b9;
-  font-size: 1.1em;
-}
-
-.detail {
-  grid-column: 1 / -1;
-  font-size: 0.85em;
-  color: #7f8c8d;
-  font-style: italic;
-  margin-top: 4px;
-}
-
-.yearlyPayments {
-  margin-top: 16px;
-  padding: 16px;
-  background: rgba(230, 126, 34, 0.1);
-  border-radius: 6px;
-  border: 1px solid rgba(230, 126, 34, 0.2);
-}
-
-.paymentDetail {
-  padding: 6px 0;
-  font-size: 0.9em;
-  color: #5a6c7d;
-}
-
-.paymentDetail span {
-  font-weight: 500;
 }
 
 .table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.9em;
+  font-size: 0.75em;
   background: white;
+  font-family: 'SF Mono', Monaco, 'Cascadia Code', Consolas, monospace;
 }
 
 .table th {
-  background: #f8f9fa;
-  padding: 12px 8px;
+  background: #f1f3f4;
+  padding: 4px 6px;
   text-align: center;
   font-weight: 600;
-  border-bottom: 2px solid #dee2e6;
-  border-right: 1px solid #e1e5e9;
-  font-size: 0.85em;
-}
-
-.table th:last-child {
-  border-right: none;
-}
-
-.stockHeader {
-  background: linear-gradient(135deg, #3498db, #2980b9);
-  color: white;
-}
-
-.propertyHeader {
-  background: linear-gradient(135deg, #e67e22, #d35400);
-  color: white;
-}
-
-.comparisonHeader {
-  background: linear-gradient(135deg, #8e44ad, #732d91);
-  color: white;
+  border: 1px solid #ddd;
+  font-size: 0.8em;
+  color: #2c3e50;
+  white-space: nowrap;
 }
 
 .table td {
-  padding: 10px 8px;
+  padding: 2px 4px;
   text-align: right;
-  border-bottom: 1px solid #f1f3f4;
-  border-right: 1px solid #f1f3f4;
+  border: 1px solid #eee;
+  font-size: 0.8em;
+  line-height: 1.2;
+  white-space: nowrap;
 }
 
-.table td:last-child {
-  border-right: none;
-}
-
-.table tbody tr:hover {
+.tableRow:hover {
   background: #f8f9fa;
 }
+
+.tableRow:nth-child(even) {
+  background: #fafbfc;
+}
+
+.tableRow:nth-child(even):hover {
+  background: #f0f2f5;
+}
+
+.difference {
+  text-align: center !important;
+  font-weight: 600;
+  position: relative;
+}
+
+.leader {
+  font-size: 0.7em;
+  font-weight: 400;
+  color: #7f8c8d;
+  margin-top: 2px;
+}
+
+
 
 .yearCell {
   text-align: center !important;
-  font-weight: 600;
-  background: #f8f9fa;
+  font-weight: 700;
+  background: #e9ecef !important;
+  color: #495057;
 }
 
-.taxCell {
-  color: #e74c3c;
+.positive {
+  color: #28a745;
+  font-weight: 500;
 }
 
-.debtCell {
-  color: #e74c3c;
-}
-
-.costCell {
-  color: #e67e22;
+.negative {
+  color: #dc3545;
+  font-weight: 500;
 }
 
 .totalStock {
-  background: rgba(52, 152, 219, 0.1);
-  font-weight: 600;
-  color: #2980b9;
+  background: rgba(52, 152, 219, 0.15) !important;
+  font-weight: 700;
+  color: #1e3d72;
+  border-left: 2px solid #3498db !important;
 }
 
 .totalProperty {
-  background: rgba(230, 126, 34, 0.1);
-  font-weight: 600;
-  color: #d35400;
+  background: rgba(230, 126, 34, 0.15) !important;
+  font-weight: 700;
+  color: #8b4513;
+  border-left: 2px solid #e67e22 !important;
+}
+
+.winner {
+  text-align: center !important;
+  font-weight: 700;
+  font-size: 0.75em;
+}
+
+.stockWins {
+  background: rgba(52, 152, 219, 0.2) !important;
+  color: #1e3d72;
+}
+
+.propertyWins {
+  background: rgba(230, 126, 34, 0.2) !important;
+  color: #8b4513;
 }
 
 .footnotes {
@@ -331,42 +220,30 @@
 
 @media (max-width: 768px) {
   .summaryValues {
-    gap: 12px;
+    gap: 8px;
   }
   
   .summaryItem {
     flex-direction: column;
     align-items: flex-start;
-    gap: 4px;
+    gap: 2px;
   }
   
-  .yearHeader {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
+  .table {
+    font-size: 0.65em;
   }
   
-  .finalValues {
-    flex-direction: column;
-    gap: 12px;
-    width: 100%;
+  .table th,
+  .table td {
+    padding: 1px 2px;
   }
   
-  .calculationGrid {
-    grid-template-columns: 1fr;
+  .winner {
+    min-width: 60px;
+    font-size: 0.65em;
   }
   
-  .stockCalculation {
-    border-right: none;
-    border-bottom: 1px solid #e1e5e9;
-  }
-  
-  .calcStep {
-    grid-template-columns: 1fr;
-    gap: 8px;
-  }
-  
-  .calcStep .value {
-    text-align: left;
+  .container {
+    padding: 8px;
   }
 }

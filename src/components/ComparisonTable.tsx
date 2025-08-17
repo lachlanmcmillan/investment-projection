@@ -13,6 +13,25 @@ function calculateMortgagePayment(principal: number, annualRate: number, termYea
          (Math.pow(1 + monthlyRate, numPayments) - 1);
 }
 
+// Helper function for mortgage balance calculation
+function calculateMortgageBalance(principal: number, annualRate: number, monthlyPayment: number, extraAnnualPayment: number, yearsPaid: number): number {
+  if (yearsPaid >= 30) return 0;
+  
+  const monthlyRate = annualRate / 100 / 12;
+  const totalMonthlyPayment = monthlyPayment + (extraAnnualPayment / 12);
+  const monthsPaid = yearsPaid * 12;
+  
+  if (monthlyRate === 0) {
+    return Math.max(0, principal - (totalMonthlyPayment * monthsPaid));
+  }
+  
+  // Calculate remaining balance with extra payments
+  const remainingBalance = principal * Math.pow(1 + monthlyRate, monthsPaid) - 
+                          totalMonthlyPayment * ((Math.pow(1 + monthlyRate, monthsPaid) - 1) / monthlyRate);
+  
+  return Math.max(0, remainingBalance);
+}
+
 interface Props {
   projections: YearlyProjection[];
   inputs: InvestmentInputs;
@@ -69,101 +88,78 @@ export default function ComparisonTable({ projections, inputs }: Props) {
       </div>
 
       <div className={styles.tableContainer}>
-        <div className={styles.tableWrapper}>
-          {displayYears.map((projection) => {
-            const yearIndex = projections.findIndex(p => p.year === projection.year);
-            const prevProjection = yearIndex > 0 ? projections[yearIndex - 1] : null;
-            const prevStockValue = prevProjection ? prevProjection.stockValue : inputs.initialNetWorth;
-            
-            // Calculate step-by-step values
-            const annualRent = inputs.weeklyRent * 52;
-            const netInvestment = inputs.yearlyInvestment - annualRent;
-            const stockGrowth = prevStockValue * (inputs.stockAnnualReturn / 100);
-            
-            const loanAmount = inputs.houseCost - inputs.initialNetWorth;
-            const monthlyMortgage = loanAmount > 0 ? calculateMortgagePayment(loanAmount, inputs.mortgageRate, 30) : 0;
-            const annualMortgage = monthlyMortgage * 12;
-            const extraPayment = Math.max(0, inputs.yearlyInvestment - annualMortgage - inputs.ownersCorp);
-            
-            return (
-              <div key={projection.year} className={styles.yearSection}>
-                <div className={styles.yearHeader}>
-                  <h3>Year {projection.year}</h3>
-                  <div className={styles.finalValues}>
-                    <span className={styles.stockFinal}>
-                      Rent + Stocks: {formatCurrency(projection.stockNetWorth)}
-                    </span>
-                    <span className={styles.propertyFinal}>
-                      Own House: {formatCurrency(projection.propertyNetWorth)}
-                    </span>
-                  </div>
-                </div>
-                
-                <div className={styles.calculationGrid}>
-                  <div className={styles.stockCalculation}>
-                    <h4>📊 Rent + Stocks Calculation</h4>
-                    <div className={styles.calcSteps}>
-                      <div className={styles.calcStep}>
-                        <span className={styles.label}>Previous portfolio value:</span>
-                        <span className={styles.value}>{formatCurrency(prevStockValue)}</span>
-                      </div>
-                      <div className={styles.calcStep}>
-                        <span className={styles.label}>+ Investment available:</span>
-                        <span className={styles.value}>{formatCurrency(netInvestment)}</span>
-                        <span className={styles.detail}>
-                          ({formatCurrency(inputs.yearlyInvestment)} budget - {formatCurrency(annualRent)} rent)
-                        </span>
-                      </div>
-                      <div className={styles.calcStep}>
-                        <span className={styles.label}>+ Portfolio growth:</span>
-                        <span className={styles.value}>{formatCurrency(stockGrowth)}</span>
-                        <span className={styles.detail}>
-                          ({formatCurrency(prevStockValue)} × {inputs.stockAnnualReturn}%)
-                        </span>
-                      </div>
-                      <div className={`${styles.calcStep} ${styles.total}`}>
-                        <span className={styles.label}>= Total portfolio:</span>
-                        <span className={styles.value}>{formatCurrency(projection.stockValue)}</span>
-                      </div>
-                    </div>
-                  </div>
+        <table className={styles.table}>
+          <thead>
+            <tr>
+              <th>Year</th>
+              <th>Portfolio</th>
+              <th>Growth</th>
+              <th>Investment</th>
+              <th>Rent Paid</th>
+              <th>Net Stocks</th>
+              <th>House Value</th>
+              <th>Mortgage</th>
+              <th>Interest</th>
+              <th>Payments</th>
+              <th>Net Property</th>
+              <th>Winner</th>
+            </tr>
+          </thead>
+          <tbody>
+            {displayYears.map((projection) => {
+              const yearIndex = projections.findIndex(p => p.year === projection.year);
+              const prevProjection = yearIndex > 0 ? projections[yearIndex - 1] : null;
+              const prevStockValue = prevProjection ? prevProjection.stockValue : inputs.initialNetWorth;
+              
+              const annualRent = inputs.weeklyRent * 52;
+              const netInvestment = inputs.yearlyInvestment - annualRent;
+              const stockGrowth = prevStockValue * (inputs.stockAnnualReturn / 100);
+              
+              const loanAmount = inputs.houseCost - inputs.initialNetWorth;
+              const monthlyMortgage = loanAmount > 0 ? calculateMortgagePayment(loanAmount, inputs.mortgageRate, 30) : 0;
+              const annualMortgage = monthlyMortgage * 12;
+              const extraPayment = Math.max(0, inputs.yearlyInvestment - annualMortgage - inputs.ownersCorp);
+              
+              // Calculate beginning of year house value
+              const beginningHouseValue = yearIndex > 0 ? 
+                inputs.houseCost * Math.pow(1 + inputs.houseGrowthRate / 100, projection.year - 1) : 
+                inputs.houseCost;
+              
+              // Calculate beginning of year mortgage balance
+              const beginningMortgageBalance = yearIndex > 0 ? 
+                calculateMortgageBalance(loanAmount, inputs.mortgageRate, monthlyMortgage, extraPayment, projection.year - 1) : 
+                loanAmount;
+              
+              const difference = projection.stockNetWorth - projection.propertyNetWorth;
+              const leader = difference >= 0 ? 'S' : 'P';
+              
+              return (
+                <tr key={projection.year} className={styles.tableRow}>
+                  <td className={styles.yearCell}>{projection.year}</td>
                   
-                  <div className={styles.propertyCalculation}>
-                    <h4>🏠 Own House Calculation</h4>
-                    <div className={styles.calcSteps}>
-                      <div className={styles.calcStep}>
-                        <span className={styles.label}>House value:</span>
-                        <span className={styles.value}>{formatCurrency(projection.propertyValue)}</span>
-                        <span className={styles.detail}>
-                          ({formatCurrency(inputs.houseCost)} growing at {inputs.houseGrowthRate}%/year)
-                        </span>
-                      </div>
-                      <div className={styles.calcStep}>
-                        <span className={styles.label}>- Mortgage remaining:</span>
-                        <span className={styles.value}>-{formatCurrency(projection.mortgageBalance)}</span>
-                      </div>
-                      <div className={`${styles.calcStep} ${styles.total}`}>
-                        <span className={styles.label}>= Net equity:</span>
-                        <span className={styles.value}>{formatCurrency(projection.propertyNetWorth)}</span>
-                      </div>
-                      <div className={styles.yearlyPayments}>
-                        <div className={styles.paymentDetail}>
-                          <span>Mortgage repayments (mandatory): {formatCurrency(annualMortgage)}/year</span>
-                        </div>
-                        <div className={styles.paymentDetail}>
-                          <span>Mortgage repayments (offset account): {formatCurrency(extraPayment)}/year</span>
-                        </div>
-                        <div className={styles.paymentDetail}>
-                          <span>Owners costs: {formatCurrency(inputs.ownersCorp)}/year</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
+                  {/* Stock columns */}
+                  <td>{formatCurrency(prevStockValue)}</td>
+                  <td className={styles.positive}>+{formatCurrency(stockGrowth)}</td>
+                  <td className={styles.positive}>+{formatCurrency(inputs.yearlyInvestment)}</td>
+                  <td className={styles.negative}>-{formatCurrency(annualRent)}</td>
+                  <td className={styles.totalStock}>{formatCurrency(projection.stockNetWorth)}</td>
+                  
+                  {/* Property columns */}
+                  <td>{formatCurrency(beginningHouseValue)}</td>
+                  <td className={styles.negative}>{formatCurrency(beginningMortgageBalance)}</td>
+                  <td className={styles.negative}>-{formatCurrency(projection.totalInterestPaid)}</td>
+                  <td className={styles.negative}>-{formatCurrency(annualMortgage + inputs.ownersCorp)}</td>
+                  <td className={styles.totalProperty}>{formatCurrency(projection.propertyNetWorth)}</td>
+                  
+                  {/* Winner */}
+                  <td className={`${styles.winner} ${difference >= 0 ? styles.stockWins : styles.propertyWins}`}>
+                    {leader} {formatCurrency(Math.abs(difference))}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
       </div>
 
       <div className={styles.footnotes}>
