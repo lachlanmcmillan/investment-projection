@@ -1,69 +1,127 @@
-# React + TypeScript + Vite
+# 🏠 📈 Investment Projection Calculator
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+(Vibe coded) 
 
-Currently, two official plugins are available:
+An interactive web application that compares two major financial strategies for Australian home buyers: **renting + investing in stocks** vs **purchasing a house as your primary residence**.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🎯 What Does This Tool Do?
 
-## Expanding the ESLint configuration
+This calculator helps you make informed decisions about one of life's biggest financial choices by modeling both paths over time:
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Path 1: Rent + Stock Investment
+- Use your initial savings to invest in the stock market
+- Continue renting while making regular stock investments
+- Track how your stock portfolio grows over time
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### Path 2: House Purchase
+- Use your initial savings as a house deposit
+- Take out a mortgage for the remaining amount
+- Make regular mortgage payments and track property appreciation
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+## 📊 Key Features
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- **Interactive Parameter Adjustment**: Customize all variables to match your situation
+- **Visual Net Worth Comparison**: See both paths plotted on an interactive chart
+- **Detailed Year-by-Year Breakdown**: Compare costs, investments, and net worth annually
+- **Australian Market Focus**: Formatted for AUD currency and typical Australian scenarios
+- **Real-time Calculations**: Results update instantly as you change parameters
+
+## 🔧 Parameters You Can Adjust
+
+### General Parameters
+- **Initial Net Worth**: Your available savings for deposit or initial investment
+- **Yearly Investment**: Annual amount available for investments/extra mortgage payments
+
+### Stock Investment Path (Renting)
+- **Weekly Rent**: Your rental costs per week
+- **Stock Annual Return**: Expected stock market return (including dividends)
+
+### Property Purchase Path
+- **House Cost**: Total purchase price of the property
+- **Mortgage Rate**: Annual interest rate on your home loan
+- **House Growth Rate**: Expected annual property appreciation
+- **Annual Ownership Costs**: Strata fees, repairs, rates, insurance, etc.
+
+## 🧮 How It Works
+
+The calculator performs sophisticated financial modeling:
+
+1. **Mortgage Calculations**: Computes monthly payments, interest costs, and payoff timelines
+2. **Investment Growth**: Models compound growth of stock investments over time
+3. **Net Worth Tracking**: Calculates total net worth for both scenarios annually
+4. **Cost Comparison**: Factors in opportunity costs, interest payments, and ongoing expenses
+
+## 🚀 Getting Started
+
+### Prerequisites
+- [Node.js](https://nodejs.org/) (version 18 or higher)
+- [Bun](https://bun.sh/) package manager
+
+### Installation
+
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd investment-projection
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+2. Install dependencies:
+```bash
+bun install
 ```
+
+3. Start the development server:
+```bash
+bun run dev
+```
+
+4. Open your browser to `http://localhost:5173`
+
+### Building for Production
+
+```bash
+bun run build
+```
+
+The built files will be in the `dist/` directory.
+
+## 🛠️ Technology Stack
+
+- **Frontend Framework**: React 19 with TypeScript
+- **Build Tool**: Vite
+- **Charts**: Chart.js with react-chartjs-2
+- **Styling**: CSS Modules
+- **Package Manager**: Bun
+
+## ⚠️ Important Disclaimers
+
+- **Not Financial Advice**: This tool provides estimates and comparisons only
+- **Simplified Model**: Real-world scenarios may involve additional factors not captured here
+- **Australian Context**: Calculations are optimized for the Australian property and stock markets
+- **Conservative Estimates**: Default values aim to be realistic but may not reflect your specific situation
+
+## 🎨 Customization
+
+The application uses default values that represent typical Australian scenarios:
+- 9.8% annual stock return (historical ASX performance including dividends)
+- 3.5% property growth rate (conservative long-term average)
+- Standard 30-year mortgage terms
+
+Adjust these values to match your expectations and local market conditions.
+
+## 🤝 Contributing
+
+This is a personal financial planning tool, but contributions are welcome:
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Submit a pull request
+
+## 📄 License
+
+This project is open source and available under the [MIT License](LICENSE).
+
+---
+
+**Built for Australian home buyers • Simplified comparison tool • Results are estimates only**
