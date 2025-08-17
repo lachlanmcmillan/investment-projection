@@ -226,3 +226,14 @@
     padding: 8px;
   }
 }
+
+.totalsRow {
+  background-color: #f8f9fa;
+  font-weight: bold;
+}
+
+.totalsLabel {
+  font-weight: bold;
+  text-align: center;
+  background-color: #e9ecef;
+}
