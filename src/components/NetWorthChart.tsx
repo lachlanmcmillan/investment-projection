@@ -28,18 +28,9 @@ interface Props {
   inputs: InvestmentInputs;
 }
 
-// Helper function for mortgage payment calculation (same as in InputForm)
-function calculateMortgagePayment(principal: number, annualRate: number, termYears: number): number {
-  const monthlyRate = annualRate / 100 / 12;
-  const numPayments = termYears * 12;
-  
-  if (monthlyRate === 0) return principal / numPayments;
-  
-  return principal * (monthlyRate * Math.pow(1 + monthlyRate, numPayments)) /
-         (Math.pow(1 + monthlyRate, numPayments) - 1);
-}
 
-export default function NetWorthChart({ projections, inputs }: Props) {
+
+export default function NetWorthChart({ projections }: Props) {
   if (projections.length === 0) {
     return (
       <div className={styles.container}>
@@ -114,7 +105,7 @@ export default function NetWorthChart({ projections, inputs }: Props) {
         borderWidth: 2,
         cornerRadius: 8,
         displayColors: true,
-        titleFont: { size: 14, weight: 'bold' },
+        titleFont: { size: 14, weight: 'bold' as const },
         bodyFont: { size: 12 },
         padding: 16,
         caretPadding: 10,

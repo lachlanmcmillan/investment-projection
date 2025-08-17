@@ -70,7 +70,7 @@ export default function ComparisonTable({ projections, inputs }: Props) {
 
       <div className={styles.tableContainer}>
         <div className={styles.tableWrapper}>
-          {displayYears.map((projection, index) => {
+          {displayYears.map((projection) => {
             const yearIndex = projections.findIndex(p => p.year === projection.year);
             const prevProjection = yearIndex > 0 ? projections[yearIndex - 1] : null;
             const prevStockValue = prevProjection ? prevProjection.stockValue : inputs.initialNetWorth;
