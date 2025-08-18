@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import styles from './InputForm.module.css';
 
 export interface InvestmentInputs {
@@ -23,8 +24,32 @@ interface Props {
 }
 
 export default function InputForm({ inputs, onInputChange, onInputBlur }: Props) {
-  const handleInputChange = (field: keyof InvestmentInputs, value: number) => {
-    onInputChange(field, value);
+  // Track display values for inputs to handle empty states
+  const [displayValues, setDisplayValues] = useState<Partial<Record<keyof InvestmentInputs, string>>>({});
+
+  const handleInputChange = (field: keyof InvestmentInputs, value: string) => {
+    // Update display value immediately
+    setDisplayValues(prev => ({ ...prev, [field]: value }));
+    
+    // Convert to number and update actual state
+    const numValue = value === '' ? 0 : Number(value);
+    if (value === '' || !isNaN(numValue)) {
+      onInputChange(field, numValue);
+    }
+  };
+
+  const handleInputBlur = (field: keyof InvestmentInputs) => {
+    // Clear display value on blur so it shows the actual numeric value
+    setDisplayValues(prev => {
+      const newDisplayValues = { ...prev };
+      delete newDisplayValues[field];
+      return newDisplayValues;
+    });
+    onInputBlur();
+  };
+
+  const getDisplayValue = (field: keyof InvestmentInputs): string => {
+    return displayValues[field] ?? inputs[field].toString();
   };
 
   // Calculate derived values for display
@@ -52,9 +77,9 @@ export default function InputForm({ inputs, onInputChange, onInputBlur }: Props)
           <label>Initial Net Worth / Deposit ($)</label>
           <input
             type="number"
-            value={inputs.initialNetWorth}
-            onChange={(e) => handleInputChange('initialNetWorth', Number(e.target.value))}
-            onBlur={onInputBlur}
+            value={getDisplayValue('initialNetWorth')}
+            onChange={(e) => handleInputChange('initialNetWorth', e.target.value)}
+            onBlur={() => handleInputBlur('initialNetWorth')}
             step="10000"
           />
           <small>Your current savings available for investment or house deposit</small>
@@ -63,9 +88,9 @@ export default function InputForm({ inputs, onInputChange, onInputBlur }: Props)
           <label>Yearly Investment / Extra Payments ($)</label>
           <input
             type="number"
-            value={inputs.yearlyInvestment}
-            onChange={(e) => handleInputChange('yearlyInvestment', Number(e.target.value))}
-            onBlur={onInputBlur}
+            value={getDisplayValue('yearlyInvestment')}
+            onChange={(e) => handleInputChange('yearlyInvestment', e.target.value)}
+            onBlur={() => handleInputBlur('yearlyInvestment')}
             step="1000"
           />
           <small>Amount you can invest annually (after living expenses)</small>
@@ -78,9 +103,9 @@ export default function InputForm({ inputs, onInputChange, onInputBlur }: Props)
           <label>Weekly Rent ($)</label>
           <input
             type="number"
-            value={inputs.weeklyRent}
-            onChange={(e) => handleInputChange('weeklyRent', Number(e.target.value))}
-            onBlur={onInputBlur}
+            value={getDisplayValue('weeklyRent')}
+            onChange={(e) => handleInputChange('weeklyRent', e.target.value)}
+            onBlur={() => handleInputBlur('weeklyRent')}
             step="25"
           />
           <small>Your rental cost per week</small>
@@ -89,9 +114,9 @@ export default function InputForm({ inputs, onInputChange, onInputBlur }: Props)
           <label>Stock Annual Return (%)</label>
           <input
             type="number"
-            value={inputs.stockAnnualReturn}
-            onChange={(e) => handleInputChange('stockAnnualReturn', Number(e.target.value))}
-            onBlur={onInputBlur}
+            value={getDisplayValue('stockAnnualReturn')}
+            onChange={(e) => handleInputChange('stockAnnualReturn', e.target.value)}
+            onBlur={() => handleInputBlur('stockAnnualReturn')}
             step="0.5"
           />
           <small>Expected total return including dividends and capital growth</small>
@@ -104,9 +129,9 @@ export default function InputForm({ inputs, onInputChange, onInputBlur }: Props)
           <label>House Cost ($)</label>
           <input
             type="number"
-            value={inputs.houseCost}
-            onChange={(e) => handleInputChange('houseCost', Number(e.target.value))}
-            onBlur={onInputBlur}
+            value={getDisplayValue('houseCost')}
+            onChange={(e) => handleInputChange('houseCost', e.target.value)}
+            onBlur={() => handleInputBlur('houseCost')}
             step="25000"
             className={isUnaffordable ? styles.errorInput : ''}
           />
@@ -122,9 +147,9 @@ export default function InputForm({ inputs, onInputChange, onInputBlur }: Props)
           <label>Mortgage Interest Rate (%)</label>
           <input
             type="number"
-            value={inputs.mortgageRate}
-            onChange={(e) => handleInputChange('mortgageRate', Number(e.target.value))}
-            onBlur={onInputBlur}
+            value={getDisplayValue('mortgageRate')}
+            onChange={(e) => handleInputChange('mortgageRate', e.target.value)}
+            onBlur={() => handleInputBlur('mortgageRate')}
             step="0.1"
           />
           <small>Annual interest rate on the mortgage</small>
@@ -133,9 +158,9 @@ export default function InputForm({ inputs, onInputChange, onInputBlur }: Props)
           <label>House Growth Rate (% p.a.)</label>
           <input
             type="number"
-            value={inputs.houseGrowthRate}
-            onChange={(e) => handleInputChange('houseGrowthRate', Number(e.target.value))}
-            onBlur={onInputBlur}
+            value={getDisplayValue('houseGrowthRate')}
+            onChange={(e) => handleInputChange('houseGrowthRate', e.target.value)}
+            onBlur={() => handleInputBlur('houseGrowthRate')}
             step="0.1"
           />
           <small>Expected annual property value growth rate</small>
@@ -144,9 +169,9 @@ export default function InputForm({ inputs, onInputChange, onInputBlur }: Props)
           <label>Owners Corp, Repairs, etc. ($/year)</label>
           <input
             type="number"
-            value={inputs.ownersCorp}
-            onChange={(e) => handleInputChange('ownersCorp', Number(e.target.value))}
-            onBlur={onInputBlur}
+            value={getDisplayValue('ownersCorp')}
+            onChange={(e) => handleInputChange('ownersCorp', e.target.value)}
+            onBlur={() => handleInputBlur('ownersCorp')}
             step="500"
           />
           <small>Annual costs for maintenance, strata fees, council rates, insurance</small>
