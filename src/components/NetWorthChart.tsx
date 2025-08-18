@@ -174,9 +174,6 @@ export default function NetWorthChart({ projections }: Props) {
     },
   };
 
-  const finalProjection = projections[projections.length - 1];
-  const stockAdvantage = finalProjection.stockNetWorth - finalProjection.propertyNetWorth;
-  const stockWins = stockAdvantage >= 0;
 
   return (
     <div className={styles.container}>
