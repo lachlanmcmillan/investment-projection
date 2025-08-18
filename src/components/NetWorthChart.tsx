@@ -46,7 +46,7 @@ export default function NetWorthChart({ projections }: Props) {
     labels,
     datasets: [
       {
-        label: 'Rent + Stocks Net Worth',
+        label: 'Stocks Path Net Worth',
         data: projections.map((p) => p.stockNetWorth),
         borderColor: '#3498db',
         backgroundColor: 'rgba(52, 152, 219, 0.1)',
@@ -59,7 +59,7 @@ export default function NetWorthChart({ projections }: Props) {
         pointHoverRadius: 6,
       },
       {
-        label: 'Own House Net Worth',
+        label: 'Property Path Net Worth',
         data: projections.map((p) => p.propertyNetWorth),
         borderColor: '#e67e22',
         backgroundColor: 'rgba(230, 126, 34, 0.1)',
