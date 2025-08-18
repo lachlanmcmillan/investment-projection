@@ -55,7 +55,7 @@
   hyphens: auto;
 }
 
-.inputGroup input[type="number"] {
+.inputGroup input[type='number'] {
   padding: 6px 8px;
   border: 1px solid #ddd;
   border-radius: 4px;
@@ -67,7 +67,7 @@
   flex-shrink: 0;
 }
 
-.inputGroup input[type="number"]:focus {
+.inputGroup input[type='number']:focus {
   outline: none;
   border-color: #3498db;
   box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
@@ -107,8 +107,6 @@
   font-style: italic;
   line-height: 1.2;
 }
-
-
 
 .calculations {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -180,17 +178,17 @@
     gap: 12px;
     align-items: start;
   }
-  
+
   .section h3 {
     grid-column: 1 / -1;
     margin-bottom: 8px;
   }
-  
+
   .inputGroup {
     width: 100%;
     min-width: 0; /* Allows flexbox children to shrink below their content size */
   }
-  
+
   .calcGrid {
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 8px;

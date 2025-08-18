@@ -131,16 +131,16 @@
     height: 400px;
     padding: 12px;
   }
-  
+
   .insights {
     grid-template-columns: 1fr;
     gap: 16px;
   }
-  
+
   .insight {
     padding: 12px;
   }
-  
+
   .icon {
     font-size: 1.3em;
   }

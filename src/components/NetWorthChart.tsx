@@ -28,8 +28,6 @@ interface Props {
   inputs: InvestmentInputs;
 }
 
-
-
 export default function NetWorthChart({ projections }: Props) {
   if (projections.length === 0) {
     return (
@@ -42,14 +40,14 @@ export default function NetWorthChart({ projections }: Props) {
     );
   }
 
-  const labels = projections.map(p => `Year ${p.year}`);
-  
+  const labels = projections.map((p) => `Year ${p.year}`);
+
   const data = {
     labels,
     datasets: [
       {
         label: 'Rent + Stocks Net Worth',
-        data: projections.map(p => p.stockNetWorth),
+        data: projections.map((p) => p.stockNetWorth),
         borderColor: '#3498db',
         backgroundColor: 'rgba(52, 152, 219, 0.1)',
         fill: false,
@@ -62,7 +60,7 @@ export default function NetWorthChart({ projections }: Props) {
       },
       {
         label: 'Own House Net Worth',
-        data: projections.map(p => p.propertyNetWorth),
+        data: projections.map((p) => p.propertyNetWorth),
         borderColor: '#e67e22',
         backgroundColor: 'rgba(230, 126, 34, 0.1)',
         fill: false,
@@ -110,12 +108,12 @@ export default function NetWorthChart({ projections }: Props) {
         padding: 16,
         caretPadding: 10,
         callbacks: {
-          label: function(context: any) {
+          label: function (context: any) {
             const label = context.dataset.label || '';
             const value = formatCurrency(context.parsed.y);
             return `${label}: ${value}`;
           },
-          afterBody: function(tooltipItems: any[]) {
+          afterBody: function (tooltipItems: any[]) {
             if (tooltipItems.length === 2) {
               const stockValue = tooltipItems[0].parsed.y;
               const propertyValue = tooltipItems[1].parsed.y;
@@ -124,11 +122,11 @@ export default function NetWorthChart({ projections }: Props) {
               return [
                 '',
                 `Difference: ${formatCurrency(Math.abs(difference))}`,
-                `${leader} is ahead`
+                `${leader} is ahead`,
               ];
             }
             return [];
-          }
+          },
         },
       },
     },
@@ -157,7 +155,7 @@ export default function NetWorthChart({ projections }: Props) {
         },
         ticks: {
           color: '#5a6c7d',
-          callback: function(value: any) {
+          callback: function (value: any) {
             return formatCurrency(value);
           },
         },
@@ -174,16 +172,12 @@ export default function NetWorthChart({ projections }: Props) {
     },
   };
 
-
   return (
     <div className={styles.container}>
       <h2>Net Worth Growth Over Time</h2>
       <div className={styles.chartContainer}>
         <Line data={data} options={options} />
       </div>
-
-
-
     </div>
   );
 }

@@ -32,7 +32,10 @@ const urlParamMap: Record<keyof InvestmentInputs, string> = {
 
 // Reverse mapping for URL params to input keys
 const inputKeyMap: Record<string, keyof InvestmentInputs> = Object.fromEntries(
-  Object.entries(urlParamMap).map(([key, param]) => [param, key as keyof InvestmentInputs])
+  Object.entries(urlParamMap).map(([key, param]) => [
+    param,
+    key as keyof InvestmentInputs,
+  ])
 );
 
 function getInitialInputsFromURL(): InvestmentInputs {
@@ -64,7 +67,7 @@ function updateURL(key: keyof InvestmentInputs, value: number) {
 
   const searchParams = new URLSearchParams(window.location.search);
   const urlParam = urlParamMap[key];
-  
+
   // Only update if value is different from default
   if (value !== defaultInputs[key]) {
     searchParams.set(urlParam, value.toString());
@@ -74,39 +77,44 @@ function updateURL(key: keyof InvestmentInputs, value: number) {
   }
 
   // Update URL without page reload
-  const newUrl = searchParams.toString() 
+  const newUrl = searchParams.toString()
     ? `${window.location.pathname}?${searchParams.toString()}`
     : window.location.pathname;
-    
+
   window.history.replaceState({}, '', newUrl);
 }
 
 export function useAppState() {
-  const [inputs, setInputs] = useState<InvestmentInputs>(() => getInitialInputsFromURL());
+  const [inputs, setInputs] = useState<InvestmentInputs>(() =>
+    getInitialInputsFromURL()
+  );
   const pendingChangesRef = useRef<Partial<InvestmentInputs>>({});
 
   // Handle input changes (update state immediately, URL on blur)
-  const handleInputChange = useCallback((key: keyof InvestmentInputs, value: number) => {
-    setInputs(prev => ({
-      ...prev,
-      [key]: value
-    }));
-    
-    // Store pending change for URL update on blur
-    pendingChangesRef.current[key] = value;
-  }, []);
+  const handleInputChange = useCallback(
+    (key: keyof InvestmentInputs, value: number) => {
+      setInputs((prev) => ({
+        ...prev,
+        [key]: value,
+      }));
+
+      // Store pending change for URL update on blur
+      pendingChangesRef.current[key] = value;
+    },
+    []
+  );
 
   // Handle input blur - update URL with all pending changes
   const handleInputBlur = useCallback(() => {
     const pendingChanges = pendingChangesRef.current;
-    
+
     // Update URL for each pending change
     Object.entries(pendingChanges).forEach(([key, value]) => {
       if (value !== undefined) {
         updateURL(key as keyof InvestmentInputs, value);
       }
     });
-    
+
     // Clear pending changes
     pendingChangesRef.current = {};
   }, []);

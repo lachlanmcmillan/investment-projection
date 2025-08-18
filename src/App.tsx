@@ -18,20 +18,25 @@ function App() {
       <header className="header">
         <h1>🏠 📈 Stocks vs Property Calculator</h1>
         <p className="subtitle">
-          Compare renting and investing in stocks vs purchasing a house as your primary residence. 
-          See which path builds more wealth over time in the Australian market.
+          Compare renting and investing in stocks vs purchasing a house as your
+          primary residence. See which path builds more wealth over time in the
+          Australian market.
         </p>
       </header>
 
       <main className="main">
-        <InputForm inputs={inputs} onInputChange={handleInputChange} onInputBlur={handleInputBlur} />
+        <InputForm
+          inputs={inputs}
+          onInputChange={handleInputChange}
+          onInputBlur={handleInputBlur}
+        />
         <NetWorthChart projections={projections} inputs={inputs} />
         <ComparisonTable projections={projections} inputs={inputs} />
       </main>
 
       <footer className="footer">
         <p>
-          Built for Australian home buyers • Simplified comparison tool • 
+          Built for Australian home buyers • Simplified comparison tool •
           Results are estimates only and not financial advice
         </p>
       </footer>
@@ -39,4 +44,4 @@ function App() {
   );
 }
 
-export default App
+export default App;

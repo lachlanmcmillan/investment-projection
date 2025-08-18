@@ -1,6 +1,6 @@
-import { formatCurrency, type YearlyProjection } from "../utils/calculations";
-import type { InvestmentInputs } from "./InputForm";
-import styles from "./ComparisonTable.module.css";
+import { formatCurrency, type YearlyProjection } from '../utils/calculations';
+import type { InvestmentInputs } from './InputForm';
+import styles from './ComparisonTable.module.css';
 
 // Helper function for mortgage payment calculation
 function calculateMortgagePayment(
@@ -157,7 +157,7 @@ export default function ComparisonTable({ projections, inputs }: Props) {
 
               const difference =
                 projection.stockNetWorth - projection.propertyNetWorth;
-              const leader = difference >= 0 ? "S" : "P";
+              const leader = difference >= 0 ? 'S' : 'P';
 
               return (
                 <tr key={projection.year} className={styles.tableRow}>
@@ -233,15 +233,15 @@ export default function ComparisonTable({ projections, inputs }: Props) {
                     return sum + stockGrowth;
                   }, 0)
                 )}
-              </td>{" "}
+              </td>{' '}
               {/* Total Stock Growth */}
               <td className={styles.positive}>
                 +{formatCurrency(inputs.yearlyInvestment * displayYears.length)}
-              </td>{" "}
+              </td>{' '}
               {/* Total Investment */}
               <td className={styles.negative}>
                 -{formatCurrency(inputs.weeklyRent * 52 * displayYears.length)}
-              </td>{" "}
+              </td>{' '}
               {/* Total Rent */}
               <td>-</td> {/* Net Stocks (not applicable) */}
               {/* Property totals */}
@@ -266,16 +266,16 @@ export default function ComparisonTable({ projections, inputs }: Props) {
                     return sum + houseGrowth;
                   }, 0)
                 )}
-              </td>{" "}
+              </td>{' '}
               {/* Total House Growth */}
               <td>-</td> {/* Mortgage (not applicable) */}
               <td className={styles.positive}>
                 +{formatCurrency(inputs.yearlyInvestment * displayYears.length)}
-              </td>{" "}
+              </td>{' '}
               {/* Total Investment */}
               <td className={styles.negative}>
                 -{formatCurrency(inputs.ownersCorp * displayYears.length)}
-              </td>{" "}
+              </td>{' '}
               {/* Total Fees */}
               <td className={styles.negative}>
                 -
@@ -315,7 +315,7 @@ export default function ComparisonTable({ projections, inputs }: Props) {
                     return sum + annualInterestPayment;
                   }, 0)
                 )}
-              </td>{" "}
+              </td>{' '}
               {/* Total Interest */}
               <td>-</td> {/* Net Interest (same as last year's cumulative) */}
               <td>-</td> {/* Net Property (not applicable) */}
@@ -325,8 +325,6 @@ export default function ComparisonTable({ projections, inputs }: Props) {
         </table>
       </div>
 
-
-
       <div className={styles.summary}>
         <div className={styles.summaryCard}>
           <h3>Key Insights</h3>
@@ -334,14 +332,16 @@ export default function ComparisonTable({ projections, inputs }: Props) {
             <div className={styles.insight}>
               <span className={styles.icon}>🏆</span>
               <div>
-                <strong>{stockWins ? 'Rent + Stocks' : 'Own House'}</strong> comes out ahead
+                <strong>{stockWins ? 'Rent + Stocks' : 'Own House'}</strong>{' '}
+                comes out ahead
                 <br />
                 <span className={styles.amount}>
-                  by {formatCurrency(Math.abs(stockAdvantage))} after {finalProjection.year} years
+                  by {formatCurrency(Math.abs(stockAdvantage))} after{' '}
+                  {finalProjection.year} years
                 </span>
               </div>
             </div>
-            
+
             <div className={styles.insight}>
               <span className={styles.icon}>📈</span>
               <div>
@@ -352,7 +352,7 @@ export default function ComparisonTable({ projections, inputs }: Props) {
                 </span>
               </div>
             </div>
-            
+
             <div className={styles.insight}>
               <span className={styles.icon}>🏠</span>
               <div>
@@ -392,9 +392,10 @@ export default function ComparisonTable({ projections, inputs }: Props) {
 
       <div className={styles.disclaimer}>
         <p>
-          <strong>Disclaimer:</strong> This tool is for illustrative purposes only and does not constitute financial advice. 
-          Past performance is not indicative of future results. Consider consulting with a qualified financial advisor 
-          before making investment decisions.
+          <strong>Disclaimer:</strong> This tool is for illustrative purposes
+          only and does not constitute financial advice. Past performance is not
+          indicative of future results. Consider consulting with a qualified
+          financial advisor before making investment decisions.
         </p>
       </div>
     </div>

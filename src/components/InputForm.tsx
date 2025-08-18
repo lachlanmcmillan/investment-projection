@@ -5,11 +5,11 @@ export interface InvestmentInputs {
   // General parameters
   initialNetWorth: number;
   yearlyInvestment: number;
-  
+
   // Stock investment path (renting)
   weeklyRent: number;
   stockAnnualReturn: number;
-  
+
   // Property purchase path (residence)
   houseCost: number;
   mortgageRate: number;
@@ -23,14 +23,20 @@ interface Props {
   onInputBlur: () => void;
 }
 
-export default function InputForm({ inputs, onInputChange, onInputBlur }: Props) {
+export default function InputForm({
+  inputs,
+  onInputChange,
+  onInputBlur,
+}: Props) {
   // Track display values for inputs to handle empty states
-  const [displayValues, setDisplayValues] = useState<Partial<Record<keyof InvestmentInputs, string>>>({});
+  const [displayValues, setDisplayValues] = useState<
+    Partial<Record<keyof InvestmentInputs, string>>
+  >({});
 
   const handleInputChange = (field: keyof InvestmentInputs, value: string) => {
     // Update display value immediately
-    setDisplayValues(prev => ({ ...prev, [field]: value }));
-    
+    setDisplayValues((prev) => ({ ...prev, [field]: value }));
+
     // Convert to number and update actual state
     const numValue = value === '' ? 0 : Number(value);
     if (value === '' || !isNaN(numValue)) {
@@ -40,7 +46,7 @@ export default function InputForm({ inputs, onInputChange, onInputBlur }: Props)
 
   const handleInputBlur = (field: keyof InvestmentInputs) => {
     // Clear display value on blur so it shows the actual numeric value
-    setDisplayValues(prev => {
+    setDisplayValues((prev) => {
       const newDisplayValues = { ...prev };
       delete newDisplayValues[field];
       return newDisplayValues;
@@ -55,11 +61,25 @@ export default function InputForm({ inputs, onInputChange, onInputBlur }: Props)
   // Calculate derived values for display
   const deposit = inputs.initialNetWorth;
   const loanAmount = inputs.houseCost - deposit;
-  const monthlyMortgage = loanAmount > 0 ? calculateMortgagePayment(loanAmount, inputs.mortgageRate, 30) : 0;
+  const monthlyMortgage =
+    loanAmount > 0
+      ? calculateMortgagePayment(loanAmount, inputs.mortgageRate, 30)
+      : 0;
   const totalMortgagePayments = monthlyMortgage * 12 + inputs.ownersCorp;
-  const additionalPayment = Math.max(0, inputs.yearlyInvestment - totalMortgagePayments);
-  const payoffTime = loanAmount > 0 ? calculatePayoffTime(loanAmount, inputs.mortgageRate, monthlyMortgage, additionalPayment) : 0;
-  
+  const additionalPayment = Math.max(
+    0,
+    inputs.yearlyInvestment - totalMortgagePayments
+  );
+  const payoffTime =
+    loanAmount > 0
+      ? calculatePayoffTime(
+          loanAmount,
+          inputs.mortgageRate,
+          monthlyMortgage,
+          additionalPayment
+        )
+      : 0;
+
   // Calculate affordability
   const isUnaffordable = inputs.yearlyInvestment < totalMortgagePayments;
   const minimumYearlyRequired = totalMortgagePayments;
@@ -68,9 +88,10 @@ export default function InputForm({ inputs, onInputChange, onInputBlur }: Props)
     <div className={styles.container}>
       <h2>Rent + Stocks vs Buy House Comparison</h2>
       <p className={styles.description}>
-        Compare renting and investing in stocks vs purchasing a house as your primary residence.
+        Compare renting and investing in stocks vs purchasing a house as your
+        primary residence.
       </p>
-      
+
       <div className={styles.section}>
         <h3>General Parameters</h3>
         <div className={styles.inputGroup}>
@@ -78,18 +99,24 @@ export default function InputForm({ inputs, onInputChange, onInputBlur }: Props)
           <input
             type="number"
             value={getDisplayValue('initialNetWorth')}
-            onChange={(e) => handleInputChange('initialNetWorth', e.target.value)}
+            onChange={(e) =>
+              handleInputChange('initialNetWorth', e.target.value)
+            }
             onBlur={() => handleInputBlur('initialNetWorth')}
             step="10000"
           />
-          <small>Your current savings available for investment or house deposit</small>
+          <small>
+            Your current savings available for investment or house deposit
+          </small>
         </div>
         <div className={styles.inputGroup}>
           <label>Yearly Investment / Extra Payments ($)</label>
           <input
             type="number"
             value={getDisplayValue('yearlyInvestment')}
-            onChange={(e) => handleInputChange('yearlyInvestment', e.target.value)}
+            onChange={(e) =>
+              handleInputChange('yearlyInvestment', e.target.value)
+            }
             onBlur={() => handleInputBlur('yearlyInvestment')}
             step="1000"
           />
@@ -115,11 +142,15 @@ export default function InputForm({ inputs, onInputChange, onInputBlur }: Props)
           <input
             type="number"
             value={getDisplayValue('stockAnnualReturn')}
-            onChange={(e) => handleInputChange('stockAnnualReturn', e.target.value)}
+            onChange={(e) =>
+              handleInputChange('stockAnnualReturn', e.target.value)
+            }
             onBlur={() => handleInputBlur('stockAnnualReturn')}
             step="0.5"
           />
-          <small>Expected total return including dividends and capital growth</small>
+          <small>
+            Expected total return including dividends and capital growth
+          </small>
         </div>
       </div>
 
@@ -138,8 +169,10 @@ export default function InputForm({ inputs, onInputChange, onInputBlur }: Props)
           <small>Total purchase price of the house</small>
           {isUnaffordable && (
             <div className={styles.errorMessage}>
-              ⚠️ This house price requires a minimum of <strong>{formatCurrency(minimumYearlyRequired)}/year</strong> in repayments. 
-              Increase your yearly investment or choose a cheaper house.
+              ⚠️ This house price requires a minimum of{' '}
+              <strong>{formatCurrency(minimumYearlyRequired)}/year</strong> in
+              repayments. Increase your yearly investment or choose a cheaper
+              house.
             </div>
           )}
         </div>
@@ -159,7 +192,9 @@ export default function InputForm({ inputs, onInputChange, onInputBlur }: Props)
           <input
             type="number"
             value={getDisplayValue('houseGrowthRate')}
-            onChange={(e) => handleInputChange('houseGrowthRate', e.target.value)}
+            onChange={(e) =>
+              handleInputChange('houseGrowthRate', e.target.value)
+            }
             onBlur={() => handleInputBlur('houseGrowthRate')}
             step="0.1"
           />
@@ -174,17 +209,20 @@ export default function InputForm({ inputs, onInputChange, onInputBlur }: Props)
             onBlur={() => handleInputBlur('ownersCorp')}
             step="500"
           />
-          <small>Annual costs for maintenance, strata fees, council rates, insurance</small>
+          <small>
+            Annual costs for maintenance, strata fees, council rates, insurance
+          </small>
         </div>
       </div>
 
-      <div className={`${styles.calculations} ${isUnaffordable ? styles.calculationsDisabled : ''}`}>
+      <div
+        className={`${styles.calculations} ${isUnaffordable ? styles.calculationsDisabled : ''}`}
+      >
         <h3>Quick Calculations</h3>
         <p className={styles.calcDescription}>
-          {isUnaffordable ? 
-            "⚠️ Fix the affordability issue above to see calculations" :
-            "These calculations show what happens with your inputs. Check the table below for detailed year-by-year breakdowns."
-          }
+          {isUnaffordable
+            ? '⚠️ Fix the affordability issue above to see calculations'
+            : 'These calculations show what happens with your inputs. Check the table below for detailed year-by-year breakdowns.'}
         </p>
         {!isUnaffordable && (
           <div className={styles.calcGrid}>
@@ -216,26 +254,39 @@ export default function InputForm({ inputs, onInputChange, onInputBlur }: Props)
 }
 
 // Helper functions for calculations
-function calculateMortgagePayment(principal: number, annualRate: number, termYears: number): number {
+function calculateMortgagePayment(
+  principal: number,
+  annualRate: number,
+  termYears: number
+): number {
   const monthlyRate = annualRate / 100 / 12;
   const numPayments = termYears * 12;
-  
+
   if (monthlyRate === 0) return principal / numPayments;
-  
-  return principal * (monthlyRate * Math.pow(1 + monthlyRate, numPayments)) /
-         (Math.pow(1 + monthlyRate, numPayments) - 1);
+
+  return (
+    (principal * (monthlyRate * Math.pow(1 + monthlyRate, numPayments))) /
+    (Math.pow(1 + monthlyRate, numPayments) - 1)
+  );
 }
 
-function calculatePayoffTime(principal: number, annualRate: number, monthlyPayment: number, extraAnnualPayment: number): number {
+function calculatePayoffTime(
+  principal: number,
+  annualRate: number,
+  monthlyPayment: number,
+  extraAnnualPayment: number
+): number {
   if (extraAnnualPayment <= 0) return 30; // Standard 30 year term
-  
+
   const monthlyRate = annualRate / 100 / 12;
-  const totalMonthlyPayment = monthlyPayment + (extraAnnualPayment / 12);
-  
+  const totalMonthlyPayment = monthlyPayment + extraAnnualPayment / 12;
+
   if (monthlyRate === 0) return principal / (totalMonthlyPayment * 12);
-  
+
   // Use formula for amortization with extra payments
-  const months = -Math.log(1 - (principal * monthlyRate) / totalMonthlyPayment) / Math.log(1 + monthlyRate);
+  const months =
+    -Math.log(1 - (principal * monthlyRate) / totalMonthlyPayment) /
+    Math.log(1 + monthlyRate);
   return Math.max(0.1, months / 12);
 }
 
