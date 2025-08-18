@@ -32,7 +32,7 @@ function App() {
   return (
     <div className="app">
       <header className="header">
-        <h1>🏠 📈 Rent + Stocks vs Buy House Calculator</h1>
+        <h1>🏠 📈 Stocks vs Property Calculator</h1>
         <p className="subtitle">
           Compare renting and investing in stocks vs purchasing a house as your primary residence. 
           See which path builds more wealth over time in the Australian market.

@@ -68,44 +68,12 @@ export default function ComparisonTable({ projections, inputs }: Props) {
 
   const finalYear = projections[projections.length - 1];
   const stockAdvantage = finalYear.stockNetWorth - finalYear.propertyNetWorth;
+  const stockWins = stockAdvantage >= 0;
+  const finalProjection = finalYear;
 
   return (
     <div className={styles.container}>
       <h2>Investment Projections Comparison</h2>
-
-      <div className={styles.summary}>
-        <div className={styles.summaryCard}>
-          <h3>Final Net Worth Comparison (Year {finalYear.year})</h3>
-          <div className={styles.summaryValues}>
-            <div className={styles.summaryItem}>
-              <span className={styles.label}>Rent + Stocks:</span>
-              <span className={`${styles.value} ${styles.stock}`}>
-                {formatCurrency(finalYear.stockNetWorth)}
-              </span>
-            </div>
-            <div className={styles.summaryItem}>
-              <span className={styles.label}>Own House:</span>
-              <span className={`${styles.value} ${styles.property}`}>
-                {formatCurrency(finalYear.propertyNetWorth)}
-              </span>
-            </div>
-            <div className={styles.summaryItem}>
-              <span className={styles.label}>Difference:</span>
-              <span
-                className={`${styles.value} ${
-                  stockAdvantage >= 0 ? styles.positive : styles.negative
-                }`}
-              >
-                {stockAdvantage >= 0 ? "+" : ""}
-                {formatCurrency(stockAdvantage)}
-                {stockAdvantage >= 0
-                  ? " (Rent+Stocks ahead)"
-                  : " (Own House ahead)"}
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
 
       <div className={styles.tableContainer}>
         <table className={styles.table}>
@@ -357,12 +325,54 @@ export default function ComparisonTable({ projections, inputs }: Props) {
         </table>
       </div>
 
+
+
+      <div className={styles.summary}>
+        <div className={styles.summaryCard}>
+          <h3>Key Insights</h3>
+          <div className={styles.insights}>
+            <div className={styles.insight}>
+              <span className={styles.icon}>🏆</span>
+              <div>
+                <strong>{stockWins ? 'Rent + Stocks' : 'Own House'}</strong> comes out ahead
+                <br />
+                <span className={styles.amount}>
+                  by {formatCurrency(Math.abs(stockAdvantage))} after {finalProjection.year} years
+                </span>
+              </div>
+            </div>
+            
+            <div className={styles.insight}>
+              <span className={styles.icon}>📈</span>
+              <div>
+                <strong>Rent + Stocks</strong> net worth
+                <br />
+                <span className={styles.amount}>
+                  {formatCurrency(finalProjection.stockNetWorth)}
+                </span>
+              </div>
+            </div>
+            
+            <div className={styles.insight}>
+              <span className={styles.icon}>🏠</span>
+              <div>
+                <strong>Own House</strong> net worth
+                <br />
+                <span className={styles.amount}>
+                  {formatCurrency(finalProjection.propertyNetWorth)}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div className={styles.footnotes}>
         <h4>Important Notes:</h4>
         <ul>
           <li>
             Stock returns include dividends and capital growth, simplified for
-            comparison
+            comparison, dividends may incur taxes
           </li>
           <li>
             House value growth rate is user-adjustable based on your market
@@ -378,6 +388,14 @@ export default function ComparisonTable({ projections, inputs }: Props) {
             advice
           </li>
         </ul>
+      </div>
+
+      <div className={styles.disclaimer}>
+        <p>
+          <strong>Disclaimer:</strong> This tool is for illustrative purposes only and does not constitute financial advice. 
+          Past performance is not indicative of future results. Consider consulting with a qualified financial advisor 
+          before making investment decisions.
+        </p>
       </div>
     </div>
   );

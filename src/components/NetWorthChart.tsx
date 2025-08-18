@@ -181,61 +181,12 @@ export default function NetWorthChart({ projections }: Props) {
   return (
     <div className={styles.container}>
       <h2>Net Worth Growth Over Time</h2>
-      <p className={styles.hoverHint}>
-        📊 View the table below for detailed step-by-step calculations
-      </p>
-      
       <div className={styles.chartContainer}>
         <Line data={data} options={options} />
       </div>
 
-      <div className={styles.summary}>
-        <div className={styles.summaryCard}>
-          <h3>Key Insights</h3>
-          <div className={styles.insights}>
-            <div className={styles.insight}>
-              <span className={styles.icon}>🏆</span>
-              <div>
-                <strong>{stockWins ? 'Rent + Stocks' : 'Own House'}</strong> comes out ahead
-                <br />
-                <span className={styles.amount}>
-                  by {formatCurrency(Math.abs(stockAdvantage))} after {finalProjection.year} years
-                </span>
-              </div>
-            </div>
-            
-            <div className={styles.insight}>
-              <span className={styles.icon}>📈</span>
-              <div>
-                <strong>Rent + Stocks</strong> net worth
-                <br />
-                <span className={styles.amount}>
-                  {formatCurrency(finalProjection.stockNetWorth)}
-                </span>
-              </div>
-            </div>
-            
-            <div className={styles.insight}>
-              <span className={styles.icon}>🏠</span>
-              <div>
-                <strong>Own House</strong> net worth
-                <br />
-                <span className={styles.amount}>
-                  {formatCurrency(finalProjection.propertyNetWorth)}
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
 
-      <div className={styles.disclaimer}>
-        <p>
-          <strong>Disclaimer:</strong> This chart is for illustrative purposes only and does not constitute financial advice. 
-          Past performance is not indicative of future results. Consider consulting with a qualified financial advisor 
-          before making investment decisions.
-        </p>
-      </div>
+
     </div>
   );
 }
