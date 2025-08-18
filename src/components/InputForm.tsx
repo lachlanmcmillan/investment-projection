@@ -146,7 +146,7 @@ export default function InputForm({
               handleInputChange('stockAnnualReturn', e.target.value)
             }
             onBlur={() => handleInputBlur('stockAnnualReturn')}
-            step="0.5"
+            step="0.1"
           />
           <small>
             Expected total return including dividends and capital growth
