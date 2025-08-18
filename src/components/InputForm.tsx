@@ -18,15 +18,12 @@ export interface InvestmentInputs {
 
 interface Props {
   inputs: InvestmentInputs;
-  onInputChange: (inputs: InvestmentInputs) => void;
+  onInputChange: (field: keyof InvestmentInputs, value: number) => void;
 }
 
 export default function InputForm({ inputs, onInputChange }: Props) {
   const handleInputChange = (field: keyof InvestmentInputs, value: number) => {
-    onInputChange({
-      ...inputs,
-      [field]: value
-    });
+    onInputChange(field, value);
   };
 
   // Calculate derived values for display
