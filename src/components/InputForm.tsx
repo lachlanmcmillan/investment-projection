@@ -19,9 +19,10 @@ export interface InvestmentInputs {
 interface Props {
   inputs: InvestmentInputs;
   onInputChange: (field: keyof InvestmentInputs, value: number) => void;
+  onInputBlur: () => void;
 }
 
-export default function InputForm({ inputs, onInputChange }: Props) {
+export default function InputForm({ inputs, onInputChange, onInputBlur }: Props) {
   const handleInputChange = (field: keyof InvestmentInputs, value: number) => {
     onInputChange(field, value);
   };
@@ -53,6 +54,7 @@ export default function InputForm({ inputs, onInputChange }: Props) {
             type="number"
             value={inputs.initialNetWorth}
             onChange={(e) => handleInputChange('initialNetWorth', Number(e.target.value))}
+            onBlur={onInputBlur}
             step="10000"
           />
           <small>Your current savings available for investment or house deposit</small>
@@ -63,6 +65,7 @@ export default function InputForm({ inputs, onInputChange }: Props) {
             type="number"
             value={inputs.yearlyInvestment}
             onChange={(e) => handleInputChange('yearlyInvestment', Number(e.target.value))}
+            onBlur={onInputBlur}
             step="1000"
           />
           <small>Amount you can invest annually (after living expenses)</small>
@@ -77,6 +80,7 @@ export default function InputForm({ inputs, onInputChange }: Props) {
             type="number"
             value={inputs.weeklyRent}
             onChange={(e) => handleInputChange('weeklyRent', Number(e.target.value))}
+            onBlur={onInputBlur}
             step="25"
           />
           <small>Your rental cost per week</small>
@@ -87,6 +91,7 @@ export default function InputForm({ inputs, onInputChange }: Props) {
             type="number"
             value={inputs.stockAnnualReturn}
             onChange={(e) => handleInputChange('stockAnnualReturn', Number(e.target.value))}
+            onBlur={onInputBlur}
             step="0.5"
           />
           <small>Expected total return including dividends and capital growth</small>
@@ -101,6 +106,7 @@ export default function InputForm({ inputs, onInputChange }: Props) {
             type="number"
             value={inputs.houseCost}
             onChange={(e) => handleInputChange('houseCost', Number(e.target.value))}
+            onBlur={onInputBlur}
             step="25000"
             className={isUnaffordable ? styles.errorInput : ''}
           />
@@ -118,6 +124,7 @@ export default function InputForm({ inputs, onInputChange }: Props) {
             type="number"
             value={inputs.mortgageRate}
             onChange={(e) => handleInputChange('mortgageRate', Number(e.target.value))}
+            onBlur={onInputBlur}
             step="0.1"
           />
           <small>Annual interest rate on the mortgage</small>
@@ -128,6 +135,7 @@ export default function InputForm({ inputs, onInputChange }: Props) {
             type="number"
             value={inputs.houseGrowthRate}
             onChange={(e) => handleInputChange('houseGrowthRate', Number(e.target.value))}
+            onBlur={onInputBlur}
             step="0.1"
           />
           <small>Expected annual property value growth rate</small>
@@ -138,6 +146,7 @@ export default function InputForm({ inputs, onInputChange }: Props) {
             type="number"
             value={inputs.ownersCorp}
             onChange={(e) => handleInputChange('ownersCorp', Number(e.target.value))}
+            onBlur={onInputBlur}
             step="500"
           />
           <small>Annual costs for maintenance, strata fees, council rates, insurance</small>

@@ -7,7 +7,7 @@ import { useAppState } from './hooks/useAppState';
 import './App.css';
 
 function App() {
-  const { inputs, handleInputChange } = useAppState();
+  const { inputs, handleInputChange, handleInputBlur } = useAppState();
 
   const projections = useMemo(() => {
     return calculateProjections(inputs);
@@ -24,7 +24,7 @@ function App() {
       </header>
 
       <main className="main">
-        <InputForm inputs={inputs} onInputChange={handleInputChange} />
+        <InputForm inputs={inputs} onInputChange={handleInputChange} onInputBlur={handleInputBlur} />
         <NetWorthChart projections={projections} inputs={inputs} />
         <ComparisonTable projections={projections} inputs={inputs} />
       </main>

@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import type { InvestmentInputs } from '../components/InputForm';
 
 // Default values for the comparison
@@ -83,22 +83,40 @@ function updateURL(key: keyof InvestmentInputs, value: number) {
 
 export function useAppState() {
   const [inputs, setInputs] = useState<InvestmentInputs>(() => getInitialInputsFromURL());
+  const pendingChangesRef = useRef<Partial<InvestmentInputs>>({});
 
-  // Handle input changes and update URL
+  // Handle input changes (update state immediately, URL on blur)
   const handleInputChange = useCallback((key: keyof InvestmentInputs, value: number) => {
     setInputs(prev => ({
       ...prev,
       [key]: value
     }));
     
-    // Update URL with the new value
-    updateURL(key, value);
+    // Store pending change for URL update on blur
+    pendingChangesRef.current[key] = value;
+  }, []);
+
+  // Handle input blur - update URL with all pending changes
+  const handleInputBlur = useCallback(() => {
+    const pendingChanges = pendingChangesRef.current;
+    
+    // Update URL for each pending change
+    Object.entries(pendingChanges).forEach(([key, value]) => {
+      if (value !== undefined) {
+        updateURL(key as keyof InvestmentInputs, value);
+      }
+    });
+    
+    // Clear pending changes
+    pendingChangesRef.current = {};
   }, []);
 
   // Handle browser back/forward navigation
   useEffect(() => {
     const handlePopState = () => {
       setInputs(getInitialInputsFromURL());
+      // Clear any pending changes when navigating
+      pendingChangesRef.current = {};
     };
 
     window.addEventListener('popstate', handlePopState);
@@ -109,6 +127,7 @@ export function useAppState() {
     inputs,
     setInputs,
     handleInputChange,
+    handleInputBlur,
   };
 }
 
